@@ -59,7 +59,7 @@ gulp.task('browserify:min', gulp.series('write-version', function (cb) {
   ], cb);
 }));
 
-gulp.task('testbundle', gulp.series('browserify:min', 
+gulp.task('testbundle', gulp.series('browserify:min',
   gulp.parallel(function() {
     return gulp.src('./build/sockjs.min.js')
       .pipe(rename('sockjs.js'))
@@ -90,3 +90,4 @@ gulp.task('release', gulp.series('browserify', 'browserify:min', gulp.parallel(
   function () { return gulp.src('./build/sockjs.min.js').pipe(gulp.dest('./dist/')); },
   function () { return gulp.src('./build/sockjs.min.js.map').pipe(gulp.dest('./dist/')); }
 )));
+

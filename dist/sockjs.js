@@ -1,9 +1,10 @@
 /* sockjs-client v1.3.0 | http://sockjs.org | MIT license */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.SockJS = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-(function (global){
 'use strict';
 
 var transportList = require('./transport-list');
+
+var global = typeof global !== 'undefined' ? global : window
 
 module.exports = require('./main')(transportList);
 
@@ -11,8 +12,6 @@ module.exports = require('./main')(transportList);
 if ('_sockjs_onload' in global) {
   setTimeout(global._sockjs_onload, 1);
 }
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"./main":14,"./transport-list":16}],2:[function(require,module,exports){
 'use strict';
@@ -33,7 +32,7 @@ inherits(CloseEvent, Event);
 
 module.exports = CloseEvent;
 
-},{"./event":4,"inherits":57}],3:[function(require,module,exports){
+},{"./event":4,"inherits":54}],3:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -92,7 +91,7 @@ EventEmitter.prototype.removeListener = EventTarget.prototype.removeEventListene
 
 module.exports.EventEmitter = EventEmitter;
 
-},{"./eventtarget":5,"inherits":57}],4:[function(require,module,exports){
+},{"./eventtarget":5,"inherits":54}],4:[function(require,module,exports){
 'use strict';
 
 function Event(eventType) {
@@ -197,7 +196,7 @@ inherits(TransportMessageEvent, Event);
 
 module.exports = TransportMessageEvent;
 
-},{"./event":4,"inherits":57}],7:[function(require,module,exports){
+},{"./event":4,"inherits":54}],7:[function(require,module,exports){
 'use strict';
 
 var JSON3 = require('json3')
@@ -226,8 +225,7 @@ FacadeJS.prototype._close = function() {
 
 module.exports = FacadeJS;
 
-},{"./utils/iframe":47,"json3":58}],8:[function(require,module,exports){
-(function (process){
+},{"./utils/iframe":47,"json3":55}],8:[function(require,module,exports){
 'use strict';
 
 var urlUtils = require('./utils/url')
@@ -240,9 +238,6 @@ var urlUtils = require('./utils/url')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:iframe-bootstrap');
-}
 
 module.exports = function(SockJS, availableTransports) {
   var transportMap = {};
@@ -331,10 +326,7 @@ module.exports = function(SockJS, availableTransports) {
   };
 };
 
-}).call(this,{ env: {} })
-
-},{"./facade":7,"./info-iframe-receiver":10,"./location":13,"./utils/event":46,"./utils/iframe":47,"./utils/url":52,"debug":55,"json3":58}],9:[function(require,module,exports){
-(function (process){
+},{"./facade":7,"./info-iframe-receiver":10,"./location":13,"./utils/event":46,"./utils/iframe":47,"./utils/url":52,"json3":55}],9:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter
@@ -344,9 +336,6 @@ var EventEmitter = require('events').EventEmitter
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:info-ajax');
-}
 
 function InfoAjax(url, AjaxObject) {
   EventEmitter.call(this);
@@ -385,9 +374,7 @@ InfoAjax.prototype.close = function() {
 
 module.exports = InfoAjax;
 
-}).call(this,{ env: {} })
-
-},{"./utils/object":49,"debug":55,"events":3,"inherits":57,"json3":58}],10:[function(require,module,exports){
+},{"./utils/object":49,"events":3,"inherits":54,"json3":55}],10:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -422,8 +409,7 @@ InfoReceiverIframe.prototype.close = function() {
 
 module.exports = InfoReceiverIframe;
 
-},{"./info-ajax":9,"./transport/sender/xhr-local":37,"events":3,"inherits":57,"json3":58}],11:[function(require,module,exports){
-(function (process,global){
+},{"./info-ajax":9,"./transport/sender/xhr-local":37,"events":3,"inherits":54,"json3":55}],11:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter
@@ -434,10 +420,9 @@ var EventEmitter = require('events').EventEmitter
   , InfoReceiverIframe = require('./info-iframe-receiver')
   ;
 
+var global = typeof global !== 'undefined' ? global : window
+
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:info-iframe');
-}
 
 function InfoIframe(baseUrl, url) {
   var self = this;
@@ -494,10 +479,7 @@ InfoIframe.prototype.close = function() {
 
 module.exports = InfoIframe;
 
-}).call(this,{ env: {} },typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"./info-iframe-receiver":10,"./transport/iframe":22,"./utils/event":46,"debug":55,"events":3,"inherits":57,"json3":58}],12:[function(require,module,exports){
-(function (process){
+},{"./info-iframe-receiver":10,"./transport/iframe":22,"./utils/event":46,"events":3,"inherits":54,"json3":55}],12:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter
@@ -512,9 +494,6 @@ var EventEmitter = require('events').EventEmitter
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:info-receiver');
-}
 
 function InfoReceiver(baseUrl, urlInfo) {
   debug(baseUrl);
@@ -588,11 +567,10 @@ InfoReceiver.timeout = 8000;
 
 module.exports = InfoReceiver;
 
-}).call(this,{ env: {} })
-
-},{"./info-ajax":9,"./info-iframe":11,"./transport/sender/xdr":34,"./transport/sender/xhr-cors":35,"./transport/sender/xhr-fake":36,"./transport/sender/xhr-local":37,"./utils/url":52,"debug":55,"events":3,"inherits":57}],13:[function(require,module,exports){
-(function (global){
+},{"./info-ajax":9,"./info-iframe":11,"./transport/sender/xdr":34,"./transport/sender/xhr-cors":35,"./transport/sender/xhr-fake":36,"./transport/sender/xhr-local":37,"./utils/url":52,"events":3,"inherits":54}],13:[function(require,module,exports){
 'use strict';
+
+var global = typeof global !== 'undefined' ? global : window
 
 module.exports = global.location || {
   origin: 'http://localhost:80'
@@ -603,10 +581,7 @@ module.exports = global.location || {
 , hash: ''
 };
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
 },{}],14:[function(require,module,exports){
-(function (process,global){
 'use strict';
 
 require('./shims');
@@ -630,10 +605,9 @@ var URL = require('url-parse')
   , InfoReceiver = require('./info-receiver')
   ;
 
+var global = typeof global !== 'undefined' ? global : window
+
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:main');
-}
 
 var transports;
 
@@ -993,9 +967,7 @@ module.exports = function(availableTransports) {
   return SockJS;
 };
 
-}).call(this,{ env: {} },typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"./event/close":2,"./event/event":4,"./event/eventtarget":5,"./event/trans-message":6,"./iframe-bootstrap":8,"./info-receiver":12,"./location":13,"./shims":15,"./utils/browser":44,"./utils/escape":45,"./utils/event":46,"./utils/log":48,"./utils/object":49,"./utils/random":50,"./utils/transport":51,"./utils/url":52,"./version":53,"debug":55,"inherits":57,"json3":58,"url-parse":61}],15:[function(require,module,exports){
+},{"./event/close":2,"./event/event":4,"./event/eventtarget":5,"./event/trans-message":6,"./iframe-bootstrap":8,"./info-receiver":12,"./location":13,"./shims":15,"./utils/browser":44,"./utils/escape":45,"./utils/event":46,"./utils/log":48,"./utils/object":49,"./utils/random":50,"./utils/transport":51,"./utils/url":52,"./version":53,"inherits":54,"json3":55,"url-parse":58}],15:[function(require,module,exports){
 /* eslint-disable */
 /* jscs: disable */
 'use strict';
@@ -1470,8 +1442,9 @@ module.exports = [
 ];
 
 },{"./transport/eventsource":20,"./transport/htmlfile":21,"./transport/jsonp-polling":23,"./transport/lib/iframe-wrap":26,"./transport/websocket":38,"./transport/xdr-polling":39,"./transport/xdr-streaming":40,"./transport/xhr-polling":41,"./transport/xhr-streaming":42}],17:[function(require,module,exports){
-(function (process,global){
 'use strict';
+
+var global = typeof global !== 'undefined' ? global : window
 
 var EventEmitter = require('events').EventEmitter
   , inherits = require('inherits')
@@ -1481,9 +1454,6 @@ var EventEmitter = require('events').EventEmitter
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:browser:xhr');
-}
 
 function AbstractXHRObject(method, url, payload, opts) {
   debug(method, url);
@@ -1665,17 +1635,15 @@ AbstractXHRObject.supportsCORS = cors;
 
 module.exports = AbstractXHRObject;
 
-}).call(this,{ env: {} },typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../../utils/event":46,"../../utils/url":52,"events":3,"inherits":54}],18:[function(require,module,exports){
+var global = typeof global !== 'undefined' ? global : window
 
-},{"../../utils/event":46,"../../utils/url":52,"debug":55,"events":3,"inherits":57}],18:[function(require,module,exports){
-(function (global){
 module.exports = global.EventSource;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
 },{}],19:[function(require,module,exports){
-(function (global){
 'use strict';
+
+var global = typeof global !== 'undefined' ? global : window
 
 var Driver = global.WebSocket || global.MozWebSocket;
 if (Driver) {
@@ -1685,8 +1653,6 @@ if (Driver) {
 } else {
 	module.exports = undefined;
 }
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{}],20:[function(require,module,exports){
 'use strict';
@@ -1717,7 +1683,7 @@ EventSourceTransport.roundTrips = 2;
 
 module.exports = EventSourceTransport;
 
-},{"./lib/ajax-based":24,"./receiver/eventsource":29,"./sender/xhr-cors":35,"eventsource":18,"inherits":57}],21:[function(require,module,exports){
+},{"./lib/ajax-based":24,"./receiver/eventsource":29,"./sender/xhr-cors":35,"eventsource":18,"inherits":54}],21:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -1744,8 +1710,7 @@ HtmlFileTransport.roundTrips = 2;
 
 module.exports = HtmlFileTransport;
 
-},{"./lib/ajax-based":24,"./receiver/htmlfile":30,"./sender/xhr-local":37,"inherits":57}],22:[function(require,module,exports){
-(function (process){
+},{"./lib/ajax-based":24,"./receiver/htmlfile":30,"./sender/xhr-local":37,"inherits":54}],22:[function(require,module,exports){
 'use strict';
 
 // Few cool transports do work only for same-origin. In order to make
@@ -1767,9 +1732,6 @@ var inherits = require('inherits')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:transport:iframe');
-}
 
 function IframeTransport(transport, transUrl, baseUrl) {
   if (!IframeTransport.enabled()) {
@@ -1888,10 +1850,7 @@ IframeTransport.roundTrips = 2;
 
 module.exports = IframeTransport;
 
-}).call(this,{ env: {} })
-
-},{"../utils/event":46,"../utils/iframe":47,"../utils/random":50,"../utils/url":52,"../version":53,"debug":55,"events":3,"inherits":57,"json3":58}],23:[function(require,module,exports){
-(function (global){
+},{"../utils/event":46,"../utils/iframe":47,"../utils/random":50,"../utils/url":52,"../version":53,"events":3,"inherits":54,"json3":55}],23:[function(require,module,exports){
 'use strict';
 
 // The simplest and most robust transport, using the well-know cross
@@ -1907,6 +1866,8 @@ var inherits = require('inherits')
   , JsonpReceiver = require('./receiver/jsonp')
   , jsonpSender = require('./sender/jsonp')
   ;
+
+var global = typeof global !== 'undefined' ? global : window
 
 function JsonPTransport(transUrl) {
   if (!JsonPTransport.enabled()) {
@@ -1927,10 +1888,7 @@ JsonPTransport.needBody = true;
 
 module.exports = JsonPTransport;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"./lib/sender-receiver":28,"./receiver/jsonp":31,"./sender/jsonp":33,"inherits":57}],24:[function(require,module,exports){
-(function (process){
+},{"./lib/sender-receiver":28,"./receiver/jsonp":31,"./sender/jsonp":33,"inherits":54}],24:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -1939,9 +1897,6 @@ var inherits = require('inherits')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:ajax-based');
-}
 
 function createAjaxSender(AjaxObject) {
   return function(url, payload, callback) {
@@ -1981,10 +1936,7 @@ inherits(AjaxBasedTransport, SenderReceiver);
 
 module.exports = AjaxBasedTransport;
 
-}).call(this,{ env: {} })
-
-},{"../../utils/url":52,"./sender-receiver":28,"debug":55,"inherits":57}],25:[function(require,module,exports){
-(function (process){
+},{"../../utils/url":52,"./sender-receiver":28,"inherits":54}],25:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -1992,9 +1944,6 @@ var inherits = require('inherits')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:buffered-sender');
-}
 
 function BufferedSender(url, sender) {
   debug(url);
@@ -2073,16 +2022,15 @@ BufferedSender.prototype.close = function() {
 
 module.exports = BufferedSender;
 
-}).call(this,{ env: {} })
-
-},{"debug":55,"events":3,"inherits":57}],26:[function(require,module,exports){
-(function (global){
+},{"events":3,"inherits":54}],26:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
   , IframeTransport = require('../iframe')
   , objectUtils = require('../../utils/object')
   ;
+
+var global = typeof global !== 'undefined' ? global : window
 
 module.exports = function(transport) {
 
@@ -2111,10 +2059,7 @@ module.exports = function(transport) {
   return IframeWrapTransport;
 };
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"../../utils/object":49,"../iframe":22,"inherits":57}],27:[function(require,module,exports){
-(function (process){
+},{"../../utils/object":49,"../iframe":22,"inherits":54}],27:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -2122,9 +2067,6 @@ var inherits = require('inherits')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:polling');
-}
 
 function Polling(Receiver, receiveUrl, AjaxObject) {
   debug(receiveUrl);
@@ -2173,10 +2115,7 @@ Polling.prototype.abort = function() {
 
 module.exports = Polling;
 
-}).call(this,{ env: {} })
-
-},{"debug":55,"events":3,"inherits":57}],28:[function(require,module,exports){
-(function (process){
+},{"events":3,"inherits":54}],28:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -2186,9 +2125,6 @@ var inherits = require('inherits')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:sender-receiver');
-}
 
 function SenderReceiver(transUrl, urlSuffix, senderFunc, Receiver, AjaxObject) {
   var pollUrl = urlUtils.addPath(transUrl, urlSuffix);
@@ -2223,10 +2159,7 @@ SenderReceiver.prototype.close = function() {
 
 module.exports = SenderReceiver;
 
-}).call(this,{ env: {} })
-
-},{"../../utils/url":52,"./buffered-sender":25,"./polling":27,"debug":55,"inherits":57}],29:[function(require,module,exports){
-(function (process){
+},{"../../utils/url":52,"./buffered-sender":25,"./polling":27,"inherits":54}],29:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -2235,9 +2168,6 @@ var inherits = require('inherits')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:receiver:eventsource');
-}
 
 function EventSourceReceiver(url) {
   debug(url);
@@ -2291,10 +2221,7 @@ EventSourceReceiver.prototype._close = function(reason) {
 
 module.exports = EventSourceReceiver;
 
-}).call(this,{ env: {} })
-
-},{"debug":55,"events":3,"eventsource":18,"inherits":57}],30:[function(require,module,exports){
-(function (process,global){
+},{"events":3,"eventsource":18,"inherits":54}],30:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -2304,10 +2231,9 @@ var inherits = require('inherits')
   , random = require('../../utils/random')
   ;
 
+var global = typeof global !== 'undefined' ? global : window
+
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:receiver:htmlfile');
-}
 
 function HtmlfileReceiver(url) {
   debug(url);
@@ -2383,10 +2309,7 @@ HtmlfileReceiver.enabled = HtmlfileReceiver.htmlfileEnabled || iframeUtils.ifram
 
 module.exports = HtmlfileReceiver;
 
-}).call(this,{ env: {} },typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"../../utils/iframe":47,"../../utils/random":50,"../../utils/url":52,"debug":55,"events":3,"inherits":57}],31:[function(require,module,exports){
-(function (process,global){
+},{"../../utils/iframe":47,"../../utils/random":50,"../../utils/url":52,"events":3,"inherits":54}],31:[function(require,module,exports){
 'use strict';
 
 var utils = require('../../utils/iframe')
@@ -2397,10 +2320,9 @@ var utils = require('../../utils/iframe')
   , EventEmitter = require('events').EventEmitter
   ;
 
+var global = typeof global !== 'undefined' ? global : window
+
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:receiver:jsonp');
-}
 
 function JsonpReceiver(url) {
   debug(url);
@@ -2571,10 +2493,7 @@ JsonpReceiver.prototype._createScript = function(url) {
 
 module.exports = JsonpReceiver;
 
-}).call(this,{ env: {} },typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"../../utils/browser":44,"../../utils/iframe":47,"../../utils/random":50,"../../utils/url":52,"debug":55,"events":3,"inherits":57}],32:[function(require,module,exports){
-(function (process){
+},{"../../utils/browser":44,"../../utils/iframe":47,"../../utils/random":50,"../../utils/url":52,"events":3,"inherits":54}],32:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -2582,9 +2501,6 @@ var inherits = require('inherits')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:receiver:xhr');
-}
 
 function XhrReceiver(url, AjaxObject) {
   debug(url);
@@ -2646,20 +2562,16 @@ XhrReceiver.prototype.abort = function() {
 
 module.exports = XhrReceiver;
 
-}).call(this,{ env: {} })
-
-},{"debug":55,"events":3,"inherits":57}],33:[function(require,module,exports){
-(function (process,global){
+},{"events":3,"inherits":54}],33:[function(require,module,exports){
 'use strict';
 
 var random = require('../../utils/random')
   , urlUtils = require('../../utils/url')
   ;
 
+var global = typeof global !== 'undefined' ? global : window
+
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:sender:jsonp');
-}
 
 var form, area;
 
@@ -2750,10 +2662,7 @@ module.exports = function(url, payload, callback) {
   };
 };
 
-}).call(this,{ env: {} },typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"../../utils/random":50,"../../utils/url":52,"debug":55}],34:[function(require,module,exports){
-(function (process,global){
+},{"../../utils/random":50,"../../utils/url":52}],34:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter
@@ -2763,10 +2672,9 @@ var EventEmitter = require('events').EventEmitter
   , urlUtils = require('../../utils/url')
   ;
 
+var global = typeof global !== 'undefined' ? global : window
+
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:sender:xdr');
-}
 
 // References:
 //   http://ajaxian.com/archives/100-line-ajax-wrapper
@@ -2858,9 +2766,7 @@ XDRObject.enabled = !!(global.XDomainRequest && browser.hasDomain());
 
 module.exports = XDRObject;
 
-}).call(this,{ env: {} },typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"../../utils/browser":44,"../../utils/event":46,"../../utils/url":52,"debug":55,"events":3,"inherits":57}],35:[function(require,module,exports){
+},{"../../utils/browser":44,"../../utils/event":46,"../../utils/url":52,"events":3,"inherits":54}],35:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -2877,7 +2783,7 @@ XHRCorsObject.enabled = XhrDriver.enabled && XhrDriver.supportsCORS;
 
 module.exports = XHRCorsObject;
 
-},{"../driver/xhr":17,"inherits":57}],36:[function(require,module,exports){
+},{"../driver/xhr":17,"inherits":54}],36:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter
@@ -2903,7 +2809,7 @@ XHRFake.timeout = 2000;
 
 module.exports = XHRFake;
 
-},{"events":3,"inherits":57}],37:[function(require,module,exports){
+},{"events":3,"inherits":54}],37:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -2922,8 +2828,7 @@ XHRLocalObject.enabled = XhrDriver.enabled;
 
 module.exports = XHRLocalObject;
 
-},{"../driver/xhr":17,"inherits":57}],38:[function(require,module,exports){
-(function (process){
+},{"../driver/xhr":17,"inherits":54}],38:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils/event')
@@ -2934,9 +2839,6 @@ var utils = require('../utils/event')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:websocket');
-}
 
 function WebSocketTransport(transUrl, ignore, options) {
   if (!WebSocketTransport.enabled()) {
@@ -3024,9 +2926,7 @@ WebSocketTransport.roundTrips = 2;
 
 module.exports = WebSocketTransport;
 
-}).call(this,{ env: {} })
-
-},{"../utils/event":46,"../utils/url":52,"./driver/websocket":19,"debug":55,"events":3,"inherits":57}],39:[function(require,module,exports){
+},{"../utils/event":46,"../utils/url":52,"./driver/websocket":19,"events":3,"inherits":54}],39:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -3051,7 +2951,7 @@ XdrPollingTransport.roundTrips = 2; // preflight, ajax
 
 module.exports = XdrPollingTransport;
 
-},{"./lib/ajax-based":24,"./receiver/xhr":32,"./sender/xdr":34,"./xdr-streaming":40,"inherits":57}],40:[function(require,module,exports){
+},{"./lib/ajax-based":24,"./receiver/xhr":32,"./sender/xdr":34,"./xdr-streaming":40,"inherits":54}],40:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -3085,7 +2985,7 @@ XdrStreamingTransport.roundTrips = 2; // preflight, ajax
 
 module.exports = XdrStreamingTransport;
 
-},{"./lib/ajax-based":24,"./receiver/xhr":32,"./sender/xdr":34,"inherits":57}],41:[function(require,module,exports){
+},{"./lib/ajax-based":24,"./receiver/xhr":32,"./sender/xdr":34,"inherits":54}],41:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -3120,8 +3020,7 @@ XhrPollingTransport.roundTrips = 2; // preflight, ajax
 
 module.exports = XhrPollingTransport;
 
-},{"./lib/ajax-based":24,"./receiver/xhr":32,"./sender/xhr-cors":35,"./sender/xhr-local":37,"inherits":57}],42:[function(require,module,exports){
-(function (global){
+},{"./lib/ajax-based":24,"./receiver/xhr":32,"./sender/xhr-cors":35,"./sender/xhr-local":37,"inherits":54}],42:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -3131,6 +3030,8 @@ var inherits = require('inherits')
   , XHRLocalObject = require('./sender/xhr-local')
   , browser = require('../utils/browser')
   ;
+
+var global = typeof global !== 'undefined' ? global : window
 
 function XhrStreamingTransport(transUrl) {
   if (!XHRLocalObject.enabled && !XHRCorsObject.enabled) {
@@ -3164,11 +3065,10 @@ XhrStreamingTransport.needBody = !!global.document;
 
 module.exports = XhrStreamingTransport;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"../utils/browser":44,"./lib/ajax-based":24,"./receiver/xhr":32,"./sender/xhr-cors":35,"./sender/xhr-local":37,"inherits":57}],43:[function(require,module,exports){
-(function (global){
+},{"../utils/browser":44,"./lib/ajax-based":24,"./receiver/xhr":32,"./sender/xhr-cors":35,"./sender/xhr-local":37,"inherits":54}],43:[function(require,module,exports){
 'use strict';
+
+var global = typeof global !== 'undefined' ? global : window
 
 if (global.crypto && global.crypto.getRandomValues) {
   module.exports.randomBytes = function(length) {
@@ -3186,11 +3086,10 @@ if (global.crypto && global.crypto.getRandomValues) {
   };
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
 },{}],44:[function(require,module,exports){
-(function (global){
 'use strict';
+
+var global = typeof global !== 'undefined' ? global : window
 
 module.exports = {
   isOpera: function() {
@@ -3217,8 +3116,6 @@ module.exports = {
     }
   }
 };
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{}],45:[function(require,module,exports){
 'use strict';
@@ -3272,11 +3169,12 @@ module.exports = {
   }
 };
 
-},{"json3":58}],46:[function(require,module,exports){
-(function (global){
+},{"json3":55}],46:[function(require,module,exports){
 'use strict';
 
 var random = require('./random');
+
+var global = typeof global !== 'undefined' ? global : window
 
 var onUnload = {}
   , afterUnload = false
@@ -3348,11 +3246,10 @@ if (!isChromePackagedApp) {
   module.exports.attachEvent('unload', unloadTriggered);
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
 },{"./random":50}],47:[function(require,module,exports){
-(function (process,global){
 'use strict';
+
+var global = typeof global !== 'undefined' ? global : window
 
 var eventUtils = require('./event')
   , JSON3 = require('json3')
@@ -3360,9 +3257,6 @@ var eventUtils = require('./event')
   ;
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:utils:iframe');
-}
 
 module.exports = {
   WPrefix: '_jp'
@@ -3539,11 +3433,10 @@ if (global.document) {
     typeof global.postMessage === 'object') && (!browser.isKonqueror());
 }
 
-}).call(this,{ env: {} },typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{"./browser":44,"./event":46,"debug":55,"json3":58}],48:[function(require,module,exports){
-(function (global){
+},{"./browser":44,"./event":46,"json3":55}],48:[function(require,module,exports){
 'use strict';
+
+var global = typeof global !== 'undefined' ? global : window
 
 var logObject = {};
 ['log', 'debug', 'warn'].forEach(function (level) {
@@ -3561,8 +3454,6 @@ var logObject = {};
 });
 
 module.exports = logObject;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{}],49:[function(require,module,exports){
 'use strict';
@@ -3622,13 +3513,9 @@ module.exports = {
 };
 
 },{"crypto":43}],51:[function(require,module,exports){
-(function (process){
 'use strict';
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:utils:transport');
-}
 
 module.exports = function(availableTransports) {
   return {
@@ -3674,18 +3561,12 @@ module.exports = function(availableTransports) {
   };
 };
 
-}).call(this,{ env: {} })
-
-},{"debug":55}],52:[function(require,module,exports){
-(function (process){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 var URL = require('url-parse');
 
 var debug = function() {};
-if (process.env.NODE_ENV !== 'production') {
-  debug = require('debug')('sockjs-client:utils:url');
-}
 
 module.exports = {
   getOrigin: function(url) {
@@ -3726,612 +3607,10 @@ module.exports = {
   }
 };
 
-}).call(this,{ env: {} })
-
-},{"debug":55,"url-parse":61}],53:[function(require,module,exports){
+},{"url-parse":58}],53:[function(require,module,exports){
 module.exports = '1.3.0';
 
 },{}],54:[function(require,module,exports){
-/**
- * Helpers.
- */
-
-var s = 1000;
-var m = s * 60;
-var h = m * 60;
-var d = h * 24;
-var w = d * 7;
-var y = d * 365.25;
-
-/**
- * Parse or format the given `val`.
- *
- * Options:
- *
- *  - `long` verbose formatting [false]
- *
- * @param {String|Number} val
- * @param {Object} [options]
- * @throws {Error} throw an error if val is not a non-empty string or a number
- * @return {String|Number}
- * @api public
- */
-
-module.exports = function(val, options) {
-  options = options || {};
-  var type = typeof val;
-  if (type === 'string' && val.length > 0) {
-    return parse(val);
-  } else if (type === 'number' && isNaN(val) === false) {
-    return options.long ? fmtLong(val) : fmtShort(val);
-  }
-  throw new Error(
-    'val is not a non-empty string or a valid number. val=' +
-      JSON.stringify(val)
-  );
-};
-
-/**
- * Parse the given `str` and return milliseconds.
- *
- * @param {String} str
- * @return {Number}
- * @api private
- */
-
-function parse(str) {
-  str = String(str);
-  if (str.length > 100) {
-    return;
-  }
-  var match = /^((?:\d+)?\-?\d?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
-    str
-  );
-  if (!match) {
-    return;
-  }
-  var n = parseFloat(match[1]);
-  var type = (match[2] || 'ms').toLowerCase();
-  switch (type) {
-    case 'years':
-    case 'year':
-    case 'yrs':
-    case 'yr':
-    case 'y':
-      return n * y;
-    case 'weeks':
-    case 'week':
-    case 'w':
-      return n * w;
-    case 'days':
-    case 'day':
-    case 'd':
-      return n * d;
-    case 'hours':
-    case 'hour':
-    case 'hrs':
-    case 'hr':
-    case 'h':
-      return n * h;
-    case 'minutes':
-    case 'minute':
-    case 'mins':
-    case 'min':
-    case 'm':
-      return n * m;
-    case 'seconds':
-    case 'second':
-    case 'secs':
-    case 'sec':
-    case 's':
-      return n * s;
-    case 'milliseconds':
-    case 'millisecond':
-    case 'msecs':
-    case 'msec':
-    case 'ms':
-      return n;
-    default:
-      return undefined;
-  }
-}
-
-/**
- * Short format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function fmtShort(ms) {
-  var msAbs = Math.abs(ms);
-  if (msAbs >= d) {
-    return Math.round(ms / d) + 'd';
-  }
-  if (msAbs >= h) {
-    return Math.round(ms / h) + 'h';
-  }
-  if (msAbs >= m) {
-    return Math.round(ms / m) + 'm';
-  }
-  if (msAbs >= s) {
-    return Math.round(ms / s) + 's';
-  }
-  return ms + 'ms';
-}
-
-/**
- * Long format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function fmtLong(ms) {
-  var msAbs = Math.abs(ms);
-  if (msAbs >= d) {
-    return plural(ms, msAbs, d, 'day');
-  }
-  if (msAbs >= h) {
-    return plural(ms, msAbs, h, 'hour');
-  }
-  if (msAbs >= m) {
-    return plural(ms, msAbs, m, 'minute');
-  }
-  if (msAbs >= s) {
-    return plural(ms, msAbs, s, 'second');
-  }
-  return ms + ' ms';
-}
-
-/**
- * Pluralization helper.
- */
-
-function plural(ms, msAbs, n, name) {
-  var isPlural = msAbs >= n * 1.5;
-  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');
-}
-
-},{}],55:[function(require,module,exports){
-(function (process){
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-/* eslint-env browser */
-
-/**
- * This is the web browser implementation of `debug()`.
- */
-exports.log = log;
-exports.formatArgs = formatArgs;
-exports.save = save;
-exports.load = load;
-exports.useColors = useColors;
-exports.storage = localstorage();
-/**
- * Colors.
- */
-
-exports.colors = ['#0000CC', '#0000FF', '#0033CC', '#0033FF', '#0066CC', '#0066FF', '#0099CC', '#0099FF', '#00CC00', '#00CC33', '#00CC66', '#00CC99', '#00CCCC', '#00CCFF', '#3300CC', '#3300FF', '#3333CC', '#3333FF', '#3366CC', '#3366FF', '#3399CC', '#3399FF', '#33CC00', '#33CC33', '#33CC66', '#33CC99', '#33CCCC', '#33CCFF', '#6600CC', '#6600FF', '#6633CC', '#6633FF', '#66CC00', '#66CC33', '#9900CC', '#9900FF', '#9933CC', '#9933FF', '#99CC00', '#99CC33', '#CC0000', '#CC0033', '#CC0066', '#CC0099', '#CC00CC', '#CC00FF', '#CC3300', '#CC3333', '#CC3366', '#CC3399', '#CC33CC', '#CC33FF', '#CC6600', '#CC6633', '#CC9900', '#CC9933', '#CCCC00', '#CCCC33', '#FF0000', '#FF0033', '#FF0066', '#FF0099', '#FF00CC', '#FF00FF', '#FF3300', '#FF3333', '#FF3366', '#FF3399', '#FF33CC', '#FF33FF', '#FF6600', '#FF6633', '#FF9900', '#FF9933', '#FFCC00', '#FFCC33'];
-/**
- * Currently only WebKit-based Web Inspectors, Firefox >= v31,
- * and the Firebug extension (any Firefox version) are known
- * to support "%c" CSS customizations.
- *
- * TODO: add a `localStorage` variable to explicitly enable/disable colors
- */
-// eslint-disable-next-line complexity
-
-function useColors() {
-  // NB: In an Electron preload script, document will be defined but not fully
-  // initialized. Since we know we're in Chrome, we'll just detect this case
-  // explicitly
-  if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
-    return true;
-  } // Internet Explorer and Edge do not support colors.
-
-
-  if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
-    return false;
-  } // Is webkit? http://stackoverflow.com/a/16459606/376773
-  // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
-
-
-  return typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || // Is firebug? http://stackoverflow.com/a/398120/376773
-  typeof window !== 'undefined' && window.console && (window.console.firebug || window.console.exception && window.console.table) || // Is firefox >= v31?
-  // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-  typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || // Double check webkit in userAgent just in case we are in a worker
-  typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
-}
-/**
- * Colorize log arguments if enabled.
- *
- * @api public
- */
-
-
-function formatArgs(args) {
-  args[0] = (this.useColors ? '%c' : '') + this.namespace + (this.useColors ? ' %c' : ' ') + args[0] + (this.useColors ? '%c ' : ' ') + '+' + module.exports.humanize(this.diff);
-
-  if (!this.useColors) {
-    return;
-  }
-
-  var c = 'color: ' + this.color;
-  args.splice(1, 0, c, 'color: inherit'); // The final "%c" is somewhat tricky, because there could be other
-  // arguments passed either before or after the %c, so we need to
-  // figure out the correct index to insert the CSS into
-
-  var index = 0;
-  var lastC = 0;
-  args[0].replace(/%[a-zA-Z%]/g, function (match) {
-    if (match === '%%') {
-      return;
-    }
-
-    index++;
-
-    if (match === '%c') {
-      // We only are interested in the *last* %c
-      // (the user may have provided their own)
-      lastC = index;
-    }
-  });
-  args.splice(lastC, 0, c);
-}
-/**
- * Invokes `console.log()` when available.
- * No-op when `console.log` is not a "function".
- *
- * @api public
- */
-
-
-function log() {
-  var _console;
-
-  // This hackery is required for IE8/9, where
-  // the `console.log` function doesn't have 'apply'
-  return (typeof console === "undefined" ? "undefined" : _typeof(console)) === 'object' && console.log && (_console = console).log.apply(_console, arguments);
-}
-/**
- * Save `namespaces`.
- *
- * @param {String} namespaces
- * @api private
- */
-
-
-function save(namespaces) {
-  try {
-    if (namespaces) {
-      exports.storage.setItem('debug', namespaces);
-    } else {
-      exports.storage.removeItem('debug');
-    }
-  } catch (error) {// Swallow
-    // XXX (@Qix-) should we be logging these?
-  }
-}
-/**
- * Load `namespaces`.
- *
- * @return {String} returns the previously persisted debug modes
- * @api private
- */
-
-
-function load() {
-  var r;
-
-  try {
-    r = exports.storage.getItem('debug');
-  } catch (error) {} // Swallow
-  // XXX (@Qix-) should we be logging these?
-  // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
-
-
-  if (!r && typeof process !== 'undefined' && 'env' in process) {
-    r = process.env.DEBUG;
-  }
-
-  return r;
-}
-/**
- * Localstorage attempts to return the localstorage.
- *
- * This is necessary because safari throws
- * when a user disables cookies/localstorage
- * and you attempt to access it.
- *
- * @return {LocalStorage}
- * @api private
- */
-
-
-function localstorage() {
-  try {
-    // TVMLKit (Apple TV JS Runtime) does not have a window object, just localStorage in the global context
-    // The Browser also has localStorage in the global context.
-    return localStorage;
-  } catch (error) {// Swallow
-    // XXX (@Qix-) should we be logging these?
-  }
-}
-
-module.exports = require('./common')(exports);
-var formatters = module.exports.formatters;
-/**
- * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
- */
-
-formatters.j = function (v) {
-  try {
-    return JSON.stringify(v);
-  } catch (error) {
-    return '[UnexpectedJSONParseError]: ' + error.message;
-  }
-};
-
-
-}).call(this,{ env: {} })
-
-},{"./common":56}],56:[function(require,module,exports){
-"use strict";
-
-/**
- * This is the common logic for both the Node.js and web browser
- * implementations of `debug()`.
- */
-function setup(env) {
-  createDebug.debug = createDebug;
-  createDebug.default = createDebug;
-  createDebug.coerce = coerce;
-  createDebug.disable = disable;
-  createDebug.enable = enable;
-  createDebug.enabled = enabled;
-  createDebug.humanize = require('ms');
-  Object.keys(env).forEach(function (key) {
-    createDebug[key] = env[key];
-  });
-  /**
-  * Active `debug` instances.
-  */
-
-  createDebug.instances = [];
-  /**
-  * The currently active debug mode names, and names to skip.
-  */
-
-  createDebug.names = [];
-  createDebug.skips = [];
-  /**
-  * Map of special "%n" handling functions, for the debug "format" argument.
-  *
-  * Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
-  */
-
-  createDebug.formatters = {};
-  /**
-  * Selects a color for a debug namespace
-  * @param {String} namespace The namespace string for the for the debug instance to be colored
-  * @return {Number|String} An ANSI color code for the given namespace
-  * @api private
-  */
-
-  function selectColor(namespace) {
-    var hash = 0;
-
-    for (var i = 0; i < namespace.length; i++) {
-      hash = (hash << 5) - hash + namespace.charCodeAt(i);
-      hash |= 0; // Convert to 32bit integer
-    }
-
-    return createDebug.colors[Math.abs(hash) % createDebug.colors.length];
-  }
-
-  createDebug.selectColor = selectColor;
-  /**
-  * Create a debugger with the given `namespace`.
-  *
-  * @param {String} namespace
-  * @return {Function}
-  * @api public
-  */
-
-  function createDebug(namespace) {
-    var prevTime;
-
-    function debug() {
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      // Disabled?
-      if (!debug.enabled) {
-        return;
-      }
-
-      var self = debug; // Set `diff` timestamp
-
-      var curr = Number(new Date());
-      var ms = curr - (prevTime || curr);
-      self.diff = ms;
-      self.prev = prevTime;
-      self.curr = curr;
-      prevTime = curr;
-      args[0] = createDebug.coerce(args[0]);
-
-      if (typeof args[0] !== 'string') {
-        // Anything else let's inspect with %O
-        args.unshift('%O');
-      } // Apply any `formatters` transformations
-
-
-      var index = 0;
-      args[0] = args[0].replace(/%([a-zA-Z%])/g, function (match, format) {
-        // If we encounter an escaped % then don't increase the array index
-        if (match === '%%') {
-          return match;
-        }
-
-        index++;
-        var formatter = createDebug.formatters[format];
-
-        if (typeof formatter === 'function') {
-          var val = args[index];
-          match = formatter.call(self, val); // Now we need to remove `args[index]` since it's inlined in the `format`
-
-          args.splice(index, 1);
-          index--;
-        }
-
-        return match;
-      }); // Apply env-specific formatting (colors, etc.)
-
-      createDebug.formatArgs.call(self, args);
-      var logFn = self.log || createDebug.log;
-      logFn.apply(self, args);
-    }
-
-    debug.namespace = namespace;
-    debug.enabled = createDebug.enabled(namespace);
-    debug.useColors = createDebug.useColors();
-    debug.color = selectColor(namespace);
-    debug.destroy = destroy;
-    debug.extend = extend; // Debug.formatArgs = formatArgs;
-    // debug.rawLog = rawLog;
-    // env-specific initialization logic for debug instances
-
-    if (typeof createDebug.init === 'function') {
-      createDebug.init(debug);
-    }
-
-    createDebug.instances.push(debug);
-    return debug;
-  }
-
-  function destroy() {
-    var index = createDebug.instances.indexOf(this);
-
-    if (index !== -1) {
-      createDebug.instances.splice(index, 1);
-      return true;
-    }
-
-    return false;
-  }
-
-  function extend(namespace, delimiter) {
-    return createDebug(this.namespace + (typeof delimiter === 'undefined' ? ':' : delimiter) + namespace);
-  }
-  /**
-  * Enables a debug mode by namespaces. This can include modes
-  * separated by a colon and wildcards.
-  *
-  * @param {String} namespaces
-  * @api public
-  */
-
-
-  function enable(namespaces) {
-    createDebug.save(namespaces);
-    createDebug.names = [];
-    createDebug.skips = [];
-    var i;
-    var split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
-    var len = split.length;
-
-    for (i = 0; i < len; i++) {
-      if (!split[i]) {
-        // ignore empty strings
-        continue;
-      }
-
-      namespaces = split[i].replace(/\*/g, '.*?');
-
-      if (namespaces[0] === '-') {
-        createDebug.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
-      } else {
-        createDebug.names.push(new RegExp('^' + namespaces + '$'));
-      }
-    }
-
-    for (i = 0; i < createDebug.instances.length; i++) {
-      var instance = createDebug.instances[i];
-      instance.enabled = createDebug.enabled(instance.namespace);
-    }
-  }
-  /**
-  * Disable debug output.
-  *
-  * @api public
-  */
-
-
-  function disable() {
-    createDebug.enable('');
-  }
-  /**
-  * Returns true if the given mode name is enabled, false otherwise.
-  *
-  * @param {String} name
-  * @return {Boolean}
-  * @api public
-  */
-
-
-  function enabled(name) {
-    if (name[name.length - 1] === '*') {
-      return true;
-    }
-
-    var i;
-    var len;
-
-    for (i = 0, len = createDebug.skips.length; i < len; i++) {
-      if (createDebug.skips[i].test(name)) {
-        return false;
-      }
-    }
-
-    for (i = 0, len = createDebug.names.length; i < len; i++) {
-      if (createDebug.names[i].test(name)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-  /**
-  * Coerce `val`.
-  *
-  * @param {Mixed} val
-  * @return {Mixed}
-  * @api private
-  */
-
-
-  function coerce(val) {
-    if (val instanceof Error) {
-      return val.stack || val.message;
-    }
-
-    return val;
-  }
-
-  createDebug.enable(createDebug.load());
-  return createDebug;
-}
-
-module.exports = setup;
-
-
-},{"ms":54}],57:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -4356,7 +3635,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],58:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 (function (global){
 /*! JSON v3.3.2 | http://bestiejs.github.io/json3 | Copyright 2012-2014, Kit Cambridge | http://kit.mit-license.org */
 ;(function () {
@@ -5263,7 +4542,7 @@ if (typeof Object.create === 'function') {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],59:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty;
@@ -5340,7 +4619,7 @@ function querystringify(obj, prefix) {
 exports.stringify = querystringify;
 exports.parse = querystring;
 
-},{}],60:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5380,7 +4659,7 @@ module.exports = function required(port, protocol) {
   return port !== 0;
 };
 
-},{}],61:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -5810,7 +5089,7 @@ module.exports = Url;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"querystringify":59,"requires-port":60}]},{},[1])(1)
+},{"querystringify":56,"requires-port":57}]},{},[1])(1)
 });
 
 
